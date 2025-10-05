@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Компьютерные товары</title>
+    <!-- Подключаем Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Список компьютерных товаров</h1>
+
+    <!-- Таблица товаров -->
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Бренд</th>
+                <th>Модель</th>
+                <th>Полное название</th>
+                <th>Цена (₸)</th>
+                <th>Рейтинг</th>
+                <th>Количество</th>
+                <th>Гарантия (мес.)</th>
+                <th>Категория ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ product.brand }}</td>
+                <td>{{ product.model }}</td>
+                <td>{{ product.full_name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.rating }}</td>
+                <td>{{ product.stock_quantity }}</td>
+                <td>{{ product.warranty_months }}</td>
+                <td>{{ product.category_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Форма добавления -->
+    <h2 class="mt-5 mb-3">Добавить новый товар</h2>
+    <form action="/add" method="post" class="row g-3">
+        <div class="col-md-4">
+            <input name="brand" placeholder="Бренд" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <input name="model" placeholder="Модель" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <input name="full_name" placeholder="Полное название" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input name="price" placeholder="Цена" type="number" step="0.01" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input name="rating" placeholder="Рейтинг" type="number" step="0.1" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input name="stock_quantity" placeholder="Количество" type="number" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input name="warranty_months" placeholder="Гарантия (мес.)" type="number" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input name="category_id" placeholder="ID категории" type="number" class="form-control" required>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary mt-3">Добавить товар</button>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
