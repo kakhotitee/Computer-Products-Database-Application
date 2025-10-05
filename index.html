@@ -2,80 +2,374 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Компьютерные товары</title>
-    <!-- Подключаем Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Компьютерные товары | Магазин электроники</title>
+    <!-- Подключаем Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Иконки Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --border-radius: 12px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container-main {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="rgba(255,255,255,0.1)"><polygon points="0,0 100,0 100,100"/></svg>');
+            background-size: cover;
+        }
+
+        .page-header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .table thead th {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #e9ecef;
+        }
+
+        .badge-rating {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .badge-stock {
+            font-weight: 600;
+        }
+
+        .price-highlight {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--secondary-color), #2980b9);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .product-image {
+            width: 40px;
+            height: 40px;
+            background: var(--light-bg);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container-main {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container my-5">
-    <h1 class="mb-4 text-center">Список компьютерных товаров</h1>
+    <div class="container container-main">
+        <!-- Заголовок страницы -->
+        <div class="page-header">
+            <h1><i class="bi bi-pc-display-horizontal me-3"></i>Компьютерные товары</h1>
+            <p class="subtitle">Управление ассортиментом магазина электроники</p>
+        </div>
 
-    <!-- Таблица товаров -->
-    <table class="table table-striped table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>Бренд</th>
-                <th>Модель</th>
-                <th>Полное название</th>
-                <th>Цена (₸)</th>
-                <th>Рейтинг</th>
-                <th>Количество</th>
-                <th>Гарантия (мес.)</th>
-                <th>Категория ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ product.brand }}</td>
-                <td>{{ product.model }}</td>
-                <td>{{ product.full_name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.rating }}</td>
-                <td>{{ product.stock_quantity }}</td>
-                <td>{{ product.warranty_months }}</td>
-                <td>{{ product.category_id }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <!-- Статистика -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ products|length }}</div>
+                    <div class="stats-label">Всего товаров</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ (products|selectattr('4', 'defined')|map(attribute='4')|sum)|default(0)|int }} ₸</div>
+                    <div class="stats-label">Общая стоимость</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ (products|selectattr('5', 'defined')|map(attribute='5')|max)|default(0) }}</div>
+                    <div class="stats-label">Макс. рейтинг</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number">{{ (products|selectattr('6', 'defined')|map(attribute='6')|sum)|default(0) }}</div>
+                    <div class="stats-label">Всего на складе</div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Форма добавления -->
-    <h2 class="mt-5 mb-3">Добавить новый товар</h2>
-    <form action="/add" method="post" class="row g-3">
-        <div class="col-md-4">
-            <input name="brand" placeholder="Бренд" class="form-control" required>
+        <!-- Таблица товаров -->
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-image"></i></th>
+                        <th>ID</th>
+                        <th>Бренд</th>
+                        <th>Модель</th>
+                        <th>Полное название</th>
+                        <th>Цена</th>
+                        <th>Рейтинг</th>
+                        <th>Наличие</th>
+                        <th>Гарантия</th>
+                        <th>Категория</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <div class="product-image">
+                                <i class="bi bi-laptop"></i>
+                            </div>
+                        </td>
+                        <td><span class="fw-bold text-primary">#{{ product[0] if product[0] is defined else product.product_id }}</span></td>
+                        <td>
+                            <span class="badge bg-light text-dark fs-6">{{ product[1] if product[1] is defined else product.brand }}</span>
+                        </td>
+                        <td>{{ product[2] if product[2] is defined else product.model }}</td>
+                        <td class="fw-medium">{{ product[3] if product[3] is defined else product.full_name }}</td>
+                        <td class="price-highlight">{{ "{:,.0f}".format(product[4] if product[4] is defined else product.price) }} ₸</td>
+                        <td>
+                            <span class="badge badge-rating">
+                                <i class="bi bi-star-fill me-1"></i>{{ product[5] if product[5] is defined else product.rating }}
+                            </span>
+                        </td>
+                        <td>
+                            {% set stock = product[6] if product[6] is defined else product.stock_quantity %}
+                            <span class="badge {% if stock > 10 %}bg-success{% elif stock > 0 %}bg-warning{% else %}bg-danger{% endif %} badge-stock">
+                                {{ stock }} шт.
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                {{ product[7] if product[7] is defined else product.warranty_months }} мес.
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary">#{{ product[8] if product[8] is defined else product.category_id }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-4">
-            <input name="model" placeholder="Модель" class="form-control" required>
-        </div>
-        <div class="col-md-4">
-            <input name="full_name" placeholder="Полное название" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-            <input name="price" placeholder="Цена" type="number" step="0.01" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-            <input name="rating" placeholder="Рейтинг" type="number" step="0.1" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-            <input name="stock_quantity" placeholder="Количество" type="number" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-            <input name="warranty_months" placeholder="Гарантия (мес.)" type="number" class="form-control" required>
-        </div>
-        <div class="col-md-3">
-            <input name="category_id" placeholder="ID категории" type="number" class="form-control" required>
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary mt-3">Добавить товар</button>
-        </div>
-    </form>
-</div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Форма добавления товара -->
+        <div class="form-section">
+            <h3 class="section-title"><i class="bi bi-plus-circle me-2"></i>Добавить новый товар</h3>
+            <form action="/add" method="post" class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-medium">Бренд</label>
+                    <input name="brand" placeholder="Например: Apple, Samsung" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <label class="form-label fw-medium">Модель</label>
+                    <input name="model" placeholder="Модель продукта" class="form-control" required>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label fw-medium">Полное название</label>
+                    <input name="full_name" placeholder="Полное описание товара" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label fw-medium">Цена (₸)</label>
+                    <input name="price" placeholder="0.00" type="number" step="0.01" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <label class="form-label fw-medium">Рейтинг</label>
+                    <input name="rating" placeholder="0.0 - 5.0" type="number" step="0.1" min="0" max="5" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-2">
+                    <label class="form-label fw-medium">Количество</label>
+                    <input name="stock_quantity" placeholder="0" type="number" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-2">
+                    <label class="form-label fw-medium">Гарантия (мес.)</label>
+                    <input name="warranty_months" placeholder="12" type="number" class="form-control" required>
+                </div>
+                <div class="col-md-6 col-lg-2">
+                    <label class="form-label fw-medium">ID категории</label>
+                    <input name="category_id" placeholder="1" type="number" class="form-control" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="bi bi-plus-lg me-2"></i>Добавить товар
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Добавляем анимацию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = `${index * 0.1}s`;
+                row.classList.add('fade-in');
+            });
+        });
+
+        // Динамическое обновление статистики
+        function updateStats() {
+            const stockBadges = document.querySelectorAll('.badge-stock');
+            stockBadges.forEach(badge => {
+                const stock = parseInt(badge.textContent);
+                if (stock > 10) {
+                    badge.className = 'badge bg-success badge-stock';
+                } else if (stock > 0) {
+                    badge.className = 'badge bg-warning badge-stock';
+                } else {
+                    badge.className = 'badge bg-danger badge-stock';
+                }
+            });
+        }
+
+        updateStats();
+    </script>
 </body>
 </html>
