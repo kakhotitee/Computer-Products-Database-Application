@@ -30,9 +30,31 @@ def read_root(request: Request):
         }
         for row in cursor.fetchall()
     ]
+    # Aggregates
+    cursor.execute("""
+        SELECT
+            COUNT(*) AS total_count,
+            COALESCE(SUM(price), 0) AS total_price,
+            COALESCE(MAX(rating), 0) AS max_rating,
+            COALESCE(AVG(price), 0) AS avg_price,
+            COALESCE(SUM(stock_quantity), 0) AS total_stock,
+            COALESCE(MIN(price), 0) AS min_price,
+            COALESCE(MAX(price), 0) AS max_price
+        FROM products
+    """)
+    row = cursor.fetchone()
+    stats = {
+        "total_count": row[0],
+        "total_price": float(row[1]) if row[1] is not None else 0.0,
+        "max_rating": float(row[2]) if row[2] is not None else 0.0,
+        "avg_price": float(row[3]) if row[3] is not None else 0.0,
+        "total_stock": int(row[4]) if row[4] is not None else 0,
+        "min_price": float(row[5]) if row[5] is not None else 0.0,
+        "max_price": float(row[6]) if row[6] is not None else 0.0,
+    }
     cursor.close()
     conn.close()
-    return templates.TemplateResponse("index.html", {"request": request, "products": products})
+    return templates.TemplateResponse("index.html", {"request": request, "products": products, "stats": stats})
 
 
 @app.post("/add")
@@ -59,3 +81,17 @@ def add_product(
     cursor.close()
     conn.close()
     return {"message": "Товар добавлен успешно!"}
+
+
+@app.post("/delete")
+def delete_product(product_id: int = Form(...)):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        DELETE FROM products WHERE product_id = %s
+    """, (product_id,))
+    deleted = cursor.rowcount
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"message": f"Удалено записей: {deleted}"}
